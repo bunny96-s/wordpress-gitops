@@ -1,0 +1,34 @@
+app:
+  name: wordpress
+
+image:
+  repository: wordpress
+  tag: latest
+
+containerPort: 80
+
+labels:
+  id: "902321"
+  env: "dev"
+
+service:
+  type: ClusterIP
+  port: 80
+
+env:
+  - name: WORDPRESS_DB_HOST
+    value: mariadb.db.svc.cluster.local
+  - name: WORDPRESS_DB_NAME
+    value: "902321"
+  - name: WORDPRESS_DB_USER
+    value: "3324_user"
+  - name: WORDPRESS_DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: db-secret
+        key: wordpress-password
+
+secret:
+  name: db-secret
+  data:
+    wordpress-password: "902321"

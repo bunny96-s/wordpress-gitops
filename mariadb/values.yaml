@@ -1,0 +1,32 @@
+app:
+  name: mariadb
+
+image:
+  repository: mariadb
+  tag: 10.6.4-focal
+
+containerPort: 3306
+
+labels:
+  id: "902321"
+  env: "dev"
+
+service:
+  type: ClusterIP
+  port: 3306
+
+env:
+  - name: MARIADB_DATABASE
+    value: "902321"
+  - name: MARIADB_USER
+    value: "3324_user"
+  - name: MARIADB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: db-secret
+        key: mariadb-password
+
+secret:
+  name: db-secret
+  data:
+    mariadb-password: "902321"

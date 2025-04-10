@@ -1,0 +1,27 @@
+app:
+  name: nginx-proxy
+
+image:
+  repository: nginx
+  tag: latest
+
+containerPort: 80
+
+labels:
+  id: "902321"
+  env: "dev"
+
+service:
+  type: NodePort
+  port: 80
+  nodePort: 30080
+
+volumeMounts:
+  - name: nginx-config-volume
+    mountPath: /etc/nginx/nginx.conf
+    subPath: nginx.conf
+
+volumes:
+  - name: nginx-config-volume
+    configMap:
+      name: nginx-config

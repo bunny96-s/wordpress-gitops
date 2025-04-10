@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+  labels:
+    id: "{{ .Values.labels.id }}"
+    app: {{ .Values.app.name }}
+    env: "{{ .Values.labels.env }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      id: "{{ .Values.labels.id }}"
+      app: {{ .Values.app.name }}
+  template:
+    metadata:
+      labels:
+        id: "{{ .Values.labels.id }}"
+        app: {{ .Values.app.name }}
+        env: "{{ .Values.labels.env }}"
+    spec:
+      containers:
+        - name: {{ .Values.app.name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          {{- if .Values.env }}
+          env:
+          {{- range .Values.env }}
+            - name: {{ .name }}
+              {{- if .value }}
+                value: "{{ .value }}"
+              {{- else if .valueFrom }}
+                valueFrom:
+                  {{- .valueFrom | toYaml | nindent 18 }}
+              {{- end }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml .Values.volumeMounts | nindent 12 }}
+          {{- end }}
+      {{- if .Values.volumes }}
+      volumes:
+        {{- toYaml .Values.volumes | nindent 8 }}
+      {{- end }}
