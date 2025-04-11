@@ -24,23 +24,23 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: {{ .Values.containerPort }}
-          {{- if .Values.env }}
+{{- if .Values.env }}
           env:
-          {{- range .Values.env }}
+{{- range .Values.env }}
             - name: {{ .name }}
-              {{- if .value }}
-                value: "{{ .value }}"
-              {{- else if .valueFrom }}
-                valueFrom:
-                  {{- .valueFrom | toYaml | nindent 18 }}
-              {{- end }}
-          {{- end }}
-          {{- end }}
-          {{- if .Values.volumeMounts }}
+{{- if .value }}
+              value: "{{ .value }}"
+{{- else if .valueFrom }}
+              valueFrom:
+{{ .valueFrom | toYaml | indent 16 }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- if .Values.volumeMounts }}
           volumeMounts:
-            {{- toYaml .Values.volumeMounts | nindent 12 }}
-          {{- end }}
-      {{- if .Values.volumes }}
+{{ .Values.volumeMounts | toYaml | indent 12 }}
+{{- end }}
+{{- if .Values.volumes }}
       volumes:
-        {{- toYaml .Values.volumes | nindent 8 }}
-      {{- end }}
+{{ .Values.volumes | toYaml | indent 8 }}
+{{- end }}
