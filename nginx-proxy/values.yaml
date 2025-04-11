@@ -25,3 +25,8 @@ volumes:
   - name: nginx-config-volume
     configMap:
       name: nginx-config
+
+secret:
+  name: dummy-secret
+  data:
+    key: value
