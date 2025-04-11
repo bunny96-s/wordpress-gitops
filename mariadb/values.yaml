@@ -25,8 +25,14 @@ env:
       secretKeyRef:
         name: db-secret
         key: mariadb-password
+  - name: MARIADB_ROOT_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: db-secret
+        key: mariadb-root-password
 
 secret:
   name: db-secret
   data:
     mariadb-password: "902321"
+    mariadb-root-password: "902321"
