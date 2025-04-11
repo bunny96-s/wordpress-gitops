@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wordpress
+  namespace: argocd
+spec:
+  destination:
+    namespace: wp
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/bunny96-s/wordpress-gitops
+    targetRevision: main
+    path: wordpress
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
